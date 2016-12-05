@@ -1,8 +1,8 @@
 import {hasHistory} from 'dva/router';
-import {query} from '../services/users';
+import {create, remove, update, query} from '../services/users';
 
 export default {
-  
+
   namespace: 'users',
 
   state: {
@@ -21,7 +21,7 @@ export default {
         if(location.pathname === "/users"){
           dispatch({
             type: 'query',
-            payload: location.query 
+            payload: location.query
           });
         }
       });
@@ -45,7 +45,13 @@ export default {
        }
     },
     *create(){},
-    *'delete'(){},
+    *'delete'({payload},{select, call, put}){
+      yield put({type: 'showLoading'});
+      const { data } = yield call(remove, {id: payload});
+      if(data && data.success){
+        yield put({type: 'deleteSuccess', payload});
+      }
+    },
     *update(){}
   },
 
@@ -59,7 +65,11 @@ export default {
       return {...state, ...action.payload, loading:false};
     },
     createSuccess(){},
-    deleteSuccess(){},
+    deleteSuccess(state, action){
+      const id = action.payload;
+      const newList = state.list.filter(user => user.id != id);
+      return {...state, list: newList, loading:false};
+    },
     updateSuccess(){}
   }
 

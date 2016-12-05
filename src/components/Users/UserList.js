@@ -7,6 +7,7 @@ const UserList = ({
   current,
   loading,
   dataSource,
+  onDeleteItem
 }) => {
   const colums = [
     {
@@ -32,7 +33,7 @@ const UserList = ({
         <p>
           <a onClick={() => {}}>编辑</a>
           &nbsp;
-          <Popconfirm title="确定要删除吗?" onConfirm={()=>{}}>
+          <Popconfirm title="确定要删除吗?" onConfirm={()=>onDeleteItem(record.id)}>
             <a>删除</a>
           </Popconfirm>
         </p>
@@ -45,7 +46,7 @@ const UserList = ({
      pageSize: 10,
      onChange: () => {}
   };
-  
+
   return (
     <div>
       <Table columns={colums} dataSource={dataSource} loading={loading} rowKey={record => record.id} pagination={pagination}/>
@@ -53,6 +54,14 @@ const UserList = ({
   );
 };
 
+UserList.propTypes = {
+  onPageChange: PropTypes.func,
+  onDeleteItem: PropTypes.func,
+  onEditItem: PropTypes.func,
+  dataSource: PropTypes.array,
+  loading: PropTypes.any,
+  total: PropTypes.any,
+  current: PropTypes.any,
+};
 
 export default UserList;
-

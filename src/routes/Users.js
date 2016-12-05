@@ -8,7 +8,7 @@ import UserSearch from '../components/Users/UserSearch.js';
 import styles from './Users.less';
 
 function Users({location, dispatch, users}){
-  
+
   const {loading, list, total, current, currentItem, modalVisible, modalType} = users;
 
   const userSearchProps = {};
@@ -16,7 +16,13 @@ function Users({location, dispatch, users}){
     dataSource: list,
     total,
     loading,
-    current
+    current,
+    onDeleteItem(id){
+      dispatch({
+        type: "users/delete",
+        payload: id,
+      });
+    },
   };
   const userModalProps = {};
 
@@ -38,4 +44,3 @@ function mapStateToProps({users}){
 }
 
 export default connect(mapStateToProps)(Users);
-
