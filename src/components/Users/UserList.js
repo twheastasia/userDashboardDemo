@@ -1,13 +1,15 @@
 import React, {Component, PropTypes} from 'react';
-
-import {Table, message, Popconfirm} from 'antd';
+import {Table, message, Popconfirm, Pagination } from 'antd';
+import styles from './UserList.less';
 
 const UserList = ({
   total,
   current,
   loading,
   dataSource,
-  onDeleteItem
+  onDeleteItem,
+  onEditItem,
+  onPageChange,
 }) => {
   const colums = [
     {
@@ -31,7 +33,7 @@ const UserList = ({
       key: 'operation',
       render: (text, record) => (
         <p>
-          <a onClick={() => {}}>编辑</a>
+          <a onClick={() => onEditItem(record)}>编辑</a>
           &nbsp;
           <Popconfirm title="确定要删除吗?" onConfirm={()=>onDeleteItem(record.id)}>
             <a>删除</a>
@@ -40,16 +42,17 @@ const UserList = ({
       )
     }
   ];
-  const pagination = {
-     total,
-     current,
-     pageSize: 10,
-     onChange: () => {}
-  };
 
   return (
     <div>
-      <Table columns={colums} dataSource={dataSource} loading={loading} rowKey={record => record.id} pagination={pagination}/>
+      <Table columns={colums} dataSource={dataSource} loading={loading} rowKey={record => record.id} pagination={false}/>
+      <Pagination
+        className="ant-table-pagination"
+        total={total}
+        current={current}
+        pageSize={10}
+        onChange={onPageChange}
+      />
     </div>
   );
 };
